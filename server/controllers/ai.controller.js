@@ -1,5 +1,5 @@
 import Vehicle from "../models/Vehicle.model.js";
-import { generateRiskScore, generateMaintenanceCost } from "../services/gemini.service.js";
+import { generateRiskScore, generateMaintenanceCost } from "../services/openrouter.service.js";
 import { successResponse, errorResponse } from "../utils/responseHandler.js";
 
 export const getRiskScore = async (req, res) => {
