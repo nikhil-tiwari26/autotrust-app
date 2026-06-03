@@ -36,8 +36,8 @@
 - [ ] Allowed formats: jpg, jpeg, png, webp only ✅
 
 ### 6. AI Provider Setup
-- [ ] Choose between OpenRouter (free) or Gemini API
-- [ ] Obtain API keys and add to .env.production
+- [ ] Use OpenRouter (free) for AI requests
+- [ ] Obtain OpenRouter API key and add to .env.production
 - [ ] Test AI endpoints return proper JSON responses
 - [ ] Verify mock data fallback works if API fails
 

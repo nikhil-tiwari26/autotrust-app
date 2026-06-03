@@ -1,55 +1,33 @@
 import axios from "axios";
 
-// Works with OpenRouter (free) OR Gemini API
-// Set AI_PROVIDER=openrouter in .env to use OpenRouter
-// Set AI_PROVIDER=gemini in .env to use Gemini
-
 const callAI = async (prompt) => {
-  const provider = process.env.AI_PROVIDER || "openrouter";
-
-  if (provider === "gemini") {
-    // Gemini via REST (no SDK dependency issues)
-    try {
-      const res = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-        { contents: [{ parts: [{ text: prompt }] }] },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      return res.data.candidates[0].content.parts[0].text;
-    } catch (error) {
-      console.error("Gemini API Error:", error.response?.data || error.message);
-      throw new Error(`Gemini API failed: ${error.response?.data?.error?.message || error.message}`);
-    }
-  } else {
-    // OpenRouter — free models, instant access
-    try {
-      const model = "gpt-3.5-turbo"; // Stable free model on OpenRouter
-      console.log("OpenRouter Request - Model:", model);
-      console.log("OpenRouter API Key exists:", !!process.env.OPENROUTER_API_KEY);
-      
-      const res = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        {
-          model: model,
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: 1000,
+  try {
+    const model = "gpt-3.5-turbo"; // Stable free model on OpenRouter
+    console.log("OpenRouter Request - Model:", model);
+    console.log("OpenRouter API Key exists:", !!process.env.OPENROUTER_API_KEY);
+    
+    const res = await axios.post(
+      "https://openrouter.ai/api/v1/chat/completions",
+      {
+        model,
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 1000,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:5173",
+          "X-Title": "AutoTrust",
         },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-            "Content-Type": "application/json",
-            "HTTP-Referer": "http://localhost:5173",
-            "X-Title": "AutoTrust",
-          },
-        }
-      );
-      return res.data.choices[0].message.content;
-    } catch (error) {
-      console.error("OpenRouter API Error Status:", error.response?.status);
-      console.error("OpenRouter API Error Data:", error.response?.data);
-      console.error("OpenRouter API Error:", error.message);
-      throw new Error(`OpenRouter API failed (${error.response?.status}): ${error.response?.data?.error?.message || error.message}`);
-    }
+      }
+    );
+    return res.data.choices[0].message.content;
+  } catch (error) {
+    console.error("OpenRouter API Error Status:", error.response?.status);
+    console.error("OpenRouter API Error Data:", error.response?.data);
+    console.error("OpenRouter API Error:", error.message);
+    throw new Error(`OpenRouter API failed (${error.response?.status}): ${error.response?.data?.error?.message || error.message}`);
   }
 };
 

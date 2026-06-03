@@ -4,7 +4,7 @@
 
 ## What it does
 - **Instant RC Lookup** — fetches real government data (owner history, insurance, challans, hypothecation) from Parivahan via API Setu
-- **AI Risk Score** — sends vehicle data to Google Gemini API which returns a 0-100 risk score with plain-English red flags
+- **AI Risk Score** — sends vehicle data to OpenRouter to generate a 0-100 risk score with plain-English red flags
 - **Maintenance Estimator** — AI estimates upcoming service costs for the next 20,000 km
 - **Verified Listings** — sellers post cars, admin approves before they go live
 - **Compare Cars** — compare two saved vehicle reports side by side
@@ -13,7 +13,7 @@
 - **Frontend:** React 18, TailwindCSS, React Router v6, Axios
 - **Backend:** Node.js, Express.js, MongoDB Atlas, Mongoose
 - **Auth:** JWT + bcrypt
-- **AI:** Google Gemini 1.5 Flash API
+- **AI:** OpenRouter API
 - **Vehicle Data:** API Setu (Government of India — free)
 - **Images:** Cloudinary
 - **Deploy:** Vercel (client) + Render (server) + MongoDB Atlas
@@ -49,7 +49,7 @@ PORT=5000
 MONGO_URI=your_mongodb_atlas_uri
 JWT_SECRET=your_jwt_secret
 CLIENT_URL=http://localhost:5173
-GEMINI_API_KEY=your_gemini_key_from_aistudio.google.com
+OPENROUTER_API_KEY=your_openrouter_api_key_here
 APISETU_KEY=your_key_from_apisetu.gov.in
 APISETU_CLIENT_ID=your_client_id
 CLOUDINARY_NAME=your_cloudinary_name
