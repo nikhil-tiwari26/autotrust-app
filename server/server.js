@@ -23,13 +23,19 @@ if (process.env.NODE_ENV === "production" && !process.env.CLIENT_URL) {
   );
 }
 
+const allowedOrigins = [
+  process.env.CLIENT_URL,
+  "https://autotrust-app-six.vercel.app",
+  "https://autotrust-app-git-main-nikhil-tiwari26s-projects.vercel.app",
+];
+
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || clientOrigins.includes(origin)) {
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error(`CORS policy blocked origin: ${origin}`));
+        callback(new Error("Not allowed by CORS"));
       }
     },
     credentials: true,
