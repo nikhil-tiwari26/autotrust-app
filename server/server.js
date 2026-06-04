@@ -13,9 +13,25 @@ import adminRoutes from "./routes/admin.routes.js";
 const app = express();
 
 // Middleware
+const clientOrigins = process.env.CLIENT_URL
+  ? process.env.CLIENT_URL.split(",").map((origin) => origin.trim())
+  : ["http://localhost:5173"];
+
+if (process.env.NODE_ENV === "production" && !process.env.CLIENT_URL) {
+  console.warn(
+    "WARNING: CLIENT_URL is not set in production. Set it to your frontend URL to avoid CORS issues."
+  );
+}
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin || clientOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS policy blocked origin: ${origin}`));
+      }
+    },
     credentials: true,
   })
 );
